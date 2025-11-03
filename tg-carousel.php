@@ -41,6 +41,9 @@ class YouTube_Playlist_Grid {
         
         // When WordPress loads page styles, add our CSS
         add_action('wp_enqueue_scripts', array($this, 'enqueue_styles'));
+
+        //This registers the block for the gallery
+        // add_action('init', 'zamkai_carousel_register_block');
     }
     
     /**
@@ -297,3 +300,12 @@ public function enqueue_styles() {
 // CREATE AN INSTANCE OF OUR PLUGIN CLASS
 // This actually starts the plugin running
 new YouTube_Playlist_Grid();
+
+//Block addition function the function is hooked in the construct function at start
+function zamkai_carousel_register_block() {
+    // Only register if build exists
+    if ( file_exists( plugin_dir_path( __FILE__ ) . 'build/index.js' ) ) {
+        register_block_type( __DIR__ . '/build' );
+    }
+}
+add_action('init', 'zamkai_carousel_register_block'); 

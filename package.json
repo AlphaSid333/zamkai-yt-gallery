@@ -1,0 +1,21 @@
+{
+  "name": "zamkai-carousel-wp",
+  "version": "1.0.0",
+  "description": "Displays YouTube playlist videos in a customizable grid format",
+  "main": "index.js",
+  "scripts": {
+    "build": "wp-scripts build",
+    "start": "wp-scripts start" 
+  },
+  "wpScripts": {
+    "entry": {
+      "index": "./block/index.js"
+    }
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^30.27.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
