@@ -22,7 +22,11 @@ if (!defined('ABSPATH')) {
         // Add hidden security fields that WordPress requires
         settings_fields('ytpg_settings_group'); 
         ?>
-        
+
+    <!-- USAGE INSTRUCTIONS -->
+    <h2>Usage:</h2>
+    <p>Fill out the fields below and use the Gutenberg Block or the shortcode <code>[youtube_playlist_grid]</code> in any page or post to display your playlist grid.</p>
+
         <table class="form-table">
             <!-- API KEY FIELD -->
             <tr>
@@ -118,8 +122,4 @@ if (!defined('ABSPATH')) {
     </form>
     
     <hr>
-    
-    <!-- USAGE INSTRUCTIONS -->
-    <h2>Usage</h2>
-    <p>Use the shortcode <code>[youtube_playlist_grid]</code> in any page or post to display your playlist grid.</p>
 </div>

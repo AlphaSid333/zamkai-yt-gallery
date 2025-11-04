@@ -28,7 +28,7 @@ class YouTube_Playlist_Grid {
      */
     public function __construct() {
         // When WordPress builds the admin menu, add our settings page
-        add_action('admin_menu', array($this, 'add_admin_menu'));
+        add_action('admin_menu', array($this, 'add_admin_page'));
         
         // When WordPress initializes admin features, register our settings
         add_action('admin_init', array($this, 'register_settings'));
@@ -52,13 +52,14 @@ class YouTube_Playlist_Grid {
      * Creates a link in the WordPress admin sidebar under "Settings"
      * This is where users will configure the plugin
      */
-    public function add_admin_menu() {
-        add_options_page(
+    public function add_admin_page() {
+        add_menu_page(
             'YouTube Playlist Grid Settings',  // Page title (shows in browser tab)
             'YT Playlist Grid',                // Menu title (shows in sidebar)
             'manage_options',                  // Required user permission (only admins)
             'youtube-playlist-grid',           // Unique page identifier (slug)
-            array($this, 'settings_page')      // Function to display the page
+            array($this, 'settings_page'),      // Function to display the page
+            'dashicons-youtube'                //Custom dashicon YT image for menu
         );
     }
     
