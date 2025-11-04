@@ -59,7 +59,7 @@ class YouTube_Playlist_Grid {
             'manage_options',                  // Required user permission (only admins)
             'youtube-playlist-grid',           // Unique page identifier (slug)
             array($this, 'settings_page'),      // Function to display the page
-            'dashicons-youtube'                //Custom dashicon YT image for menu
+            'dashicons-youtube'                //Custom dashicon YT image for
         );
     }
     
@@ -97,7 +97,13 @@ class YouTube_Playlist_Grid {
                 
                 // Store success message in a transient (temporary storage)
                 // This way we can display it once and it won't duplicate
-                set_transient('ytpg_cache_cleared_notice', true, 30);
+                // set_transient('ytpg_cache_cleared_notice', true, 30);
+            add_settings_error(
+                'ytpg_messages',               // Slug (can be anything)
+                'ytpg_cache_cleared',          // Unique code
+                'Cache cleared successfully and playlist refreshed!', // Message
+                'success'                      // Type: 'success', 'error', 'warning', 'info'
+            );
             }
         }
     }

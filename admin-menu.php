@@ -8,11 +8,11 @@ if (!defined('ABSPATH')) {
     <h1>YouTube Playlist Grid Settings</h1>
     
     <?php 
-    if (get_transient('ytpg_cache_cleared_notice')) {
-            echo '<div class="notice notice-success is-dismissible"><p>Cache cleared successfully! The playlist will refresh on the next page load.</p></div>';
-            // Delete the transient so message only shows once
-            delete_transient('ytpg_cache_cleared_notice');
-        }
+    // if (get_transient('ytpg_cache_cleared_notice')) {
+    //         echo '<div class="notice notice-success is-dismissible"><p>Cache cleared successfully! The playlist will refresh on the next page load.</p></div>';
+    //         // Delete the transient so message only shows once
+    //         delete_transient('ytpg_cache_cleared_notice');
+    //     }
         ?>
     
     <!-- MAIN SETTINGS FORM -->
@@ -102,6 +102,7 @@ if (!defined('ABSPATH')) {
         <?php 
         // Display the "Save Changes" button
         submit_button(); 
+        settings_errors();
         ?>
     </form>
     
