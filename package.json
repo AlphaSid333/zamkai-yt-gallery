@@ -9,7 +9,7 @@
   },
   "wpScripts": {
     "entry": {
-      "index": "./block/index.js"
+      "index": "./src/index.js"
     }
   },
   "devDependencies": {

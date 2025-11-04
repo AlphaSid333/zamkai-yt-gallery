@@ -12,6 +12,7 @@ import { __ } from '@wordpress/i18n';
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
 import { useBlockProps } from '@wordpress/block-editor';
+import ServerSideRender from '@wordpress/server-side-render';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -29,13 +30,25 @@ import './editor.scss';
  *
  * @return {Element} Element to render.
  */
-export default function Edit() {
-	return (
-		<p { ...useBlockProps() }>
-			{ __(
-				'My Block Plugin – hello from the editor!',
-				'my-block-plugin'
-			) }
-		</p>
-	);
-}
+// export default function Edit() {
+// 	return (
+// 		<p { ...useBlockProps() }>
+// 			{ __(
+// 				'My Block Plugin – hello from the editor!',
+// 				'my-block-plugin'
+// 			) }
+// 		</p>
+// 	);
+// }
+const Edit = ( { attributes } ) => {
+  return (
+    <div { ...useBlockProps() }>
+      <ServerSideRender
+        block="zamkai-carousel-wp/youtube-gallery"
+        attributes={ attributes }
+      />
+    </div>
+  );
+};
+
+export default Edit;

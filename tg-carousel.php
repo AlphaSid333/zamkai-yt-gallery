@@ -42,6 +42,7 @@ class YouTube_Playlist_Grid {
         // When WordPress loads page styles, add our CSS
         add_action('wp_enqueue_scripts', array($this, 'enqueue_styles'));
 
+        add_action( 'enqueue_block_editor_assets', array($this,'enqueue_styles') );
         //This registers the block for the gallery
         // add_action('init', 'zamkai_carousel_register_block');
     }
@@ -128,7 +129,7 @@ public function enqueue_styles() {
         $gallery_style = $settings['gallery_style'] ?? 'simple';
 
         if ($gallery_style === 'modern') {
-            wp_enqueue_style(
+            wp_register_style(
                 'ytpg-default',                          // Handle (unique identifier)
                 plugins_url('css/modern-yt-cards.css', __FILE__), // URL to the CSS file
                 array(),                                 // Dependencies (add if needed, e.g., array('wp-block-library'))
@@ -136,7 +137,7 @@ public function enqueue_styles() {
                 'all'                                    // Media type
             );
         } else{
-            wp_enqueue_style(
+            wp_register_style(
                 'ytpg-default',                          // Handle (unique identifier)
                 plugins_url('css/yt-cards.css', __FILE__), // URL to the CSS file
                 array(),                                 // Dependencies (add if needed, e.g., array('wp-block-library'))
@@ -144,6 +145,7 @@ public function enqueue_styles() {
                 'all'                                    // Media type
             );
         }
+        wp_enqueue_style('ytpg-default');
     // Enqueue the external CSS file (replace __FILE__ with $this->plugin_file if needed)
     
     
@@ -308,4 +310,6 @@ function zamkai_carousel_register_block() {
         register_block_type( __DIR__ . '/build' );
     }
 }
+error_log('here');
 add_action('init', 'zamkai_carousel_register_block'); 
+

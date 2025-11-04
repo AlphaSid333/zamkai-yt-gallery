@@ -21,12 +21,15 @@ import Edit from './edit';
 import save from './save';
 import metadata from './block.json';
 
+console.log(metadata);
+
 /**
  * Every block starts by registering a new block type definition.
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
 registerBlockType( metadata.name, {
+	// ...metadata,
 	/**
 	 * @see ./edit.js
 	 */
@@ -37,3 +40,5 @@ registerBlockType( metadata.name, {
 	 */
 	save,
 } );
+
+
