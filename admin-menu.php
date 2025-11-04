@@ -13,9 +13,6 @@ if (!defined('ABSPATH')) {
             // Delete the transient so message only shows once
             delete_transient('ytpg_cache_cleared_notice');
         }
-        
-        // Display any other WordPress settings messages
-        settings_errors(); 
         ?>
     
     <!-- MAIN SETTINGS FORM -->

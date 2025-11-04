@@ -310,6 +310,5 @@ function zamkai_carousel_register_block() {
         register_block_type( __DIR__ . '/build' );
     }
 }
-error_log('here');
 add_action('init', 'zamkai_carousel_register_block'); 
 
