@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "wp-scripts build",
-    "start": "wp-scripts start"
+    "start": "wp-scripts start",
+    "zip": "grunt"
   },
   "wpScripts": {
     "entry": {
@@ -13,7 +14,9 @@
     }
   },
   "devDependencies": {
-    "@wordpress/scripts": "^30.27.0"
+    "@wordpress/scripts": "^30.27.0",
+    "grunt": "^1.6.1",
+    "grunt-contrib-compress": "^2.0.0"
   },
   "keywords": [],
   "author": "",

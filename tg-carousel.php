@@ -4,6 +4,7 @@
  * Description: Displays YouTube playlist videos in a customizable grid format
  * Author: Zamkai master
  * Version: 1.0
+ * License: GPL Public license: https://www.gnu.org/licenses/gpl-3.0.en.html#license-text 
  */
 
 // This prevents people from accessing this file directly in their browser
