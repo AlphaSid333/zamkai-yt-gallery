@@ -3,8 +3,97 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-?>
-<div class="wrap">
+
+class YTPG_admin_menu{
+ 
+    // This stores the name we use to save settings in the WordPress database
+    // It's like a label on a storage box where we keep all our plugin settings
+    private $option_name = 'ytpg_settings';
+
+    public function __construct(){
+        // When WordPress builds the admin menu, add our settings page
+        add_action('admin_menu', array($this, 'add_admin_page'));
+        
+        // When WordPress initializes admin features, register our settings
+        add_action('admin_init', array($this, 'register_settings'));
+        
+        // When WordPress initializes admin features, also check if user clicked "Clear Cache"
+        add_action('admin_init', array($this, 'handle_cache_clear'));
+
+    }
+
+        /**
+     * ADD ADMIN MENU
+     * Creates a link in the WordPress admin sidebar under "Settings"
+     * This is where users will configure the plugin
+     */
+    public function add_admin_page() {
+        add_menu_page(
+            'YouTube Playlist Grid Settings',  // Page title (shows in browser tab)
+            'YT Playlist Grid',                // Menu title (shows in sidebar)
+            'manage_options',                  // Required user permission (only admins)
+            'youtube-playlist-grid',           // Unique page identifier (slug)
+            array($this, 'settings_page'),      // Function to display the page
+            'dashicons-youtube'                //Custom dashicon YT image for menu page
+        );
+    }
+    
+    /**
+     * REGISTER SETTINGS
+     * Tells WordPress "these settings are safe to save to the database"
+     * Without this, WordPress won't save our settings for security reasons
+     */
+    public function register_settings() {
+        register_setting('ytpg_settings_group', $this->option_name);
+    }
+    
+    /**
+     * HANDLE CACHE CLEAR
+     * This function runs when someone clicks the "Clear Cache" button
+     * It deletes the stored playlist data so fresh data is fetched next time
+     */
+    public function handle_cache_clear() {
+        // Check if the clear cache button was clicked AND verify the security token
+        if (isset($_POST['ytpg_clear_cache']) && check_admin_referer('ytpg_clear_cache_action', 'ytpg_clear_cache_nonce')) {
+            
+            // Get our saved settings from the database
+            $settings = get_option($this->option_name);
+            $playlist_id = $settings['playlist_id'] ?? '';
+            $max_results = $settings['max_results'] ?? 6;
+            
+            // Only try to clear cache if we have a playlist ID
+            if (!empty($playlist_id)) {
+                // Generate the same cache key we use to store the data
+                // This is like finding the right storage box to empty
+                $cache_key = 'ytpg_videos_' . md5($playlist_id . $max_results);
+                
+                // Delete the cached data from WordPress
+                delete_transient($cache_key);
+                
+                // Store success message in a transient (temporary storage)
+                // This way we can display it once and it won't duplicate
+                // set_transient('ytpg_cache_cleared_notice', true, 30);
+            add_settings_error(
+                'ytpg_messages',               // Slug (can be anything)
+                'ytpg_cache_cleared',          // Unique code
+                'Cache cleared successfully and playlist refreshed!', // Message
+                'success'                      // Type: 'success', 'error', 'warning', 'info'
+            );
+            }
+        }
+    }
+    
+    /**
+ * SETTINGS PAGE
+ * This creates the entire admin interface where users configure the plugin
+ * It displays input fields for API key, playlist ID, number of videos, and custom CSS
+ */
+    public function settings_page() {
+    // Get our current settings from the database
+    $settings = get_option($this->option_name);
+    
+    ?>
+    <div class="wrap">
     <h1>YouTube Playlist Grid Settings</h1>
     
     <?php 
@@ -123,4 +212,7 @@ if (!defined('ABSPATH')) {
     </form>
     
     <hr>
-</div>
+    </div> <?php
+}
+}
+new YTPG_admin_menu();

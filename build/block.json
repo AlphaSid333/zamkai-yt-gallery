@@ -11,7 +11,7 @@
   "supports": {
     "html": false
   },
-  "render": "file:../render.php",
+  "render": "file:../includes/render.php",
   "editorScript": "file:./index.js",
   "editorStyle": "ytpg-default",
   "style": "ytpg-default"
