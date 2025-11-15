@@ -4,6 +4,7 @@
  * Description: Displays YouTube playlist videos in a customizable grid format
  * Author: Zamkai master
  * Version: 1.0
+ * License: GPL Public license: https://www.gnu.org/licenses/gpl-3.0.en.html#license-text 
  */
 
 // This prevents people from accessing this file directly in their browser
@@ -17,99 +18,26 @@ if (!defined('ABSPATH')) exit;
  */
 class YouTube_Playlist_Grid {
     
-    // This stores the name we use to save settings in the WordPress database
-    // It's like a label on a storage box where we keep all our plugin settings
     private $option_name = 'ytpg_settings';
-    
     /**
      * CONSTRUCTOR - This runs automatically when the plugin loads
      * It "hooks" our functions into WordPress so they run at the right times
      * Think of hooks as saying "Hey WordPress, when you do X, also run my function Y"
      */
     public function __construct() {
-        // When WordPress builds the admin menu, add our settings page
-        add_action('admin_menu', array($this, 'add_admin_menu'));
-        
-        // When WordPress initializes admin features, register our settings
-        add_action('admin_init', array($this, 'register_settings'));
-        
-        // When WordPress initializes admin features, also check if user clicked "Clear Cache"
-        add_action('admin_init', array($this, 'handle_cache_clear'));
         
         // Register our shortcode [youtube_playlist_grid] so it displays videos
         add_shortcode('youtube_playlist_grid', array($this, 'render_grid'));
         
         // When WordPress loads page styles, add our CSS
         add_action('wp_enqueue_scripts', array($this, 'enqueue_styles'));
+
+        add_action( 'enqueue_block_editor_assets', array($this,'enqueue_styles') );
+        //This registers the block for the gallery
+        // add_action('init', 'zamkai_carousel_register_block');
     }
     
-    /**
-     * ADD ADMIN MENU
-     * Creates a link in the WordPress admin sidebar under "Settings"
-     * This is where users will configure the plugin
-     */
-    public function add_admin_menu() {
-        add_options_page(
-            'YouTube Playlist Grid Settings',  // Page title (shows in browser tab)
-            'YT Playlist Grid',                // Menu title (shows in sidebar)
-            'manage_options',                  // Required user permission (only admins)
-            'youtube-playlist-grid',           // Unique page identifier (slug)
-            array($this, 'settings_page')      // Function to display the page
-        );
-    }
-    
-    /**
-     * REGISTER SETTINGS
-     * Tells WordPress "these settings are safe to save to the database"
-     * Without this, WordPress won't save our settings for security reasons
-     */
-    public function register_settings() {
-        register_setting('ytpg_settings_group', $this->option_name);
-    }
-    
-    /**
-     * HANDLE CACHE CLEAR
-     * This function runs when someone clicks the "Clear Cache" button
-     * It deletes the stored playlist data so fresh data is fetched next time
-     */
-    public function handle_cache_clear() {
-        // Check if the clear cache button was clicked AND verify the security token
-        if (isset($_POST['ytpg_clear_cache']) && check_admin_referer('ytpg_clear_cache_action', 'ytpg_clear_cache_nonce')) {
-            
-            // Get our saved settings from the database
-            $settings = get_option($this->option_name);
-            $playlist_id = $settings['playlist_id'] ?? '';
-            $max_results = $settings['max_results'] ?? 6;
-            
-            // Only try to clear cache if we have a playlist ID
-            if (!empty($playlist_id)) {
-                // Generate the same cache key we use to store the data
-                // This is like finding the right storage box to empty
-                $cache_key = 'ytpg_videos_' . md5($playlist_id . $max_results);
-                
-                // Delete the cached data from WordPress
-                delete_transient($cache_key);
-                
-                // Store success message in a transient (temporary storage)
-                // This way we can display it once and it won't duplicate
-                set_transient('ytpg_cache_cleared_notice', true, 30);
-            }
-        }
-    }
-    
-/**
- * SETTINGS PAGE
- * This creates the entire admin interface where users configure the plugin
- * It displays input fields for API key, playlist ID, number of videos, and custom CSS
- */
-public function settings_page() {
-    // Get our current settings from the database
-    $settings = get_option($this->option_name);
-    
-    // Include the template file for the settings page layout
-    // This separates the HTML/PHP output from the main class method for better maintainability
-    include plugin_dir_path(__FILE__) . 'admin-menu.php';
-}
+   
     
 /**
  * ENQUEUE STYLES
@@ -125,7 +53,7 @@ public function enqueue_styles() {
         $gallery_style = $settings['gallery_style'] ?? 'simple';
 
         if ($gallery_style === 'modern') {
-            wp_enqueue_style(
+            wp_register_style(
                 'ytpg-default',                          // Handle (unique identifier)
                 plugins_url('css/modern-yt-cards.css', __FILE__), // URL to the CSS file
                 array(),                                 // Dependencies (add if needed, e.g., array('wp-block-library'))
@@ -133,7 +61,7 @@ public function enqueue_styles() {
                 'all'                                    // Media type
             );
         } else{
-            wp_enqueue_style(
+            wp_register_style(
                 'ytpg-default',                          // Handle (unique identifier)
                 plugins_url('css/yt-cards.css', __FILE__), // URL to the CSS file
                 array(),                                 // Dependencies (add if needed, e.g., array('wp-block-library'))
@@ -141,6 +69,7 @@ public function enqueue_styles() {
                 'all'                                    // Media type
             );
         }
+        wp_enqueue_style('ytpg-default');
     // Enqueue the external CSS file (replace __FILE__ with $this->plugin_file if needed)
     
     
@@ -297,3 +226,16 @@ public function enqueue_styles() {
 // CREATE AN INSTANCE OF OUR PLUGIN CLASS
 // This actually starts the plugin running
 new YouTube_Playlist_Grid();
+
+// Include the admin class
+require_once plugin_dir_path(__FILE__) . 'includes/admin-menu.php';
+
+//Block addition function the function is hooked in the construct function at start
+function zamkai_carousel_register_block() {
+    // Only register if build exists
+    if ( file_exists( plugin_dir_path( __FILE__ ) . 'build/index.js' ) ) {
+        register_block_type( __DIR__ . '/build' );
+    }
+}
+add_action('init', 'zamkai_carousel_register_block'); 
+
