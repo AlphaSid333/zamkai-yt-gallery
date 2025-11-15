@@ -19,7 +19,6 @@ class YTPG_admin_menu{
         
         // When WordPress initializes admin features, also check if user clicked "Clear Cache"
         add_action('admin_init', array($this, 'handle_cache_clear'));
-
     }
 
         /**
@@ -44,8 +43,34 @@ class YTPG_admin_menu{
      * Without this, WordPress won't save our settings for security reasons
      */
     public function register_settings() {
-        register_setting('ytpg_settings_group', $this->option_name);
+    register_setting(
+        'ytpg_settings_group',
+        $this->option_name,
+        [$this, 'sanitize_settings'] // your sanitization method
+    );
+}
+
+// Add this method to your class
+public function sanitize_settings( $values ) {
+    // Always return the sanitized array (or scalar)
+    $sanitized = [];
+
+    // Example: if your option is an array of values
+    foreach ( (array) $values as $key => $value ) {
+        if ( is_string( $value ) ) {
+            $sanitized[ $key ] = sanitize_text_field( $value );
+        } elseif ( is_array( $value ) ) {
+            $sanitized[ $key ] = array_map( 'sanitize_text_field', $value );
+        } elseif ( is_int( $value ) ) {
+            $sanitized[ $key ] = (int) $value;
+        } // ... handle other types: urls, emails, etc.
+        else {
+            $sanitized[ $key ] = $value; // fallback
+        }
     }
+
+    return $sanitized;
+}
     
     /**
      * HANDLE CACHE CLEAR
@@ -124,7 +149,7 @@ class YTPG_admin_menu{
                 </th>
                 <td>
                     <!-- Text input for the YouTube API key -->
-                    <input type="text" id="api_key" name="<?php echo $this->option_name; ?>[api_key]" 
+                    <input type="text" id="api_key" name="<?php echo esc_html($this->option_name); ?>[api_key]" 
                            value="<?php echo esc_attr($settings['api_key'] ?? ''); ?>" 
                            class="regular-text" />
                     <p class="description">Get your API key from <a href="https://console.developers.google.com/" target="_blank">Google Developers Console</a></p>
@@ -138,7 +163,7 @@ class YTPG_admin_menu{
                 </th>
                 <td>
                     <!-- Text input for the playlist ID or full URL -->
-                    <input type="text" id="playlist_id" name="<?php echo $this->option_name; ?>[playlist_id]" 
+                    <input type="text" id="playlist_id" name="<?php echo esc_html($this->option_name); ?>[playlist_id]" 
                            value="<?php echo esc_attr($settings['playlist_id'] ?? ''); ?>" 
                            class="regular-text" />
                     <p class="description">Enter the playlist ID (e.g., PLxxxxxxxxxxx) or full YouTube playlist URL</p>
@@ -152,7 +177,7 @@ class YTPG_admin_menu{
                 </th>
                 <td>
                     <!-- Number input limited between 1 and 50 -->
-                    <input type="number" id="max_results" name="<?php echo $this->option_name; ?>[max_results]" 
+                    <input type="number" id="max_results" name="<?php echo esc_html($this->option_name); ?>[max_results]" 
                            value="<?php echo esc_attr($settings['max_results'] ?? 6); ?>" 
                            min="1" max="50" />
                     <p class="description">Number of videos to display (1-50)</p>
@@ -166,7 +191,7 @@ class YTPG_admin_menu{
                 </th>
                 <td>
                  <!-- Dropdown select for choosing the gallery layout style -->
-                <select id="gallery_style" name="<?php echo $this->option_name; ?>[gallery_style]">
+                <select id="gallery_style" name="<?php echo esc_html($this->option_name); ?>[gallery_style]">
                     <option value="simple" <?php selected($settings['gallery_style'] ?? 'simple', 'simple'); ?>>Simple Layout</option>
                     <option value="modern" <?php selected($settings['gallery_style'] ?? 'simple', 'modern'); ?>>Modern Layout</option>
                 </select>
@@ -181,7 +206,7 @@ class YTPG_admin_menu{
                 </th>
                 <td>
                     <!-- Large text area for custom CSS code -->
-                    <textarea id="custom_css" name="<?php echo $this->option_name; ?>[custom_css]" 
+                    <textarea id="custom_css" name="<?php echo esc_html($this->option_name); ?>[custom_css]" 
                               rows="10" class="large-text code"><?php echo esc_textarea($settings['custom_css'] ?? ''); ?></textarea>
                     <p class="description">Add your custom CSS styles here</p>
                 </td>

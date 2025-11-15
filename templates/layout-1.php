@@ -1,5 +1,7 @@
 <?php
 // SECURITY CHECK - Ensure this file is only included from the plugin class
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+
 if (!defined('ABSPATH')) {
     exit;
 }

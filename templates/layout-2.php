@@ -1,5 +1,6 @@
 <?php
 // SECURITY CHECK - Ensure this file is only included from the plugin class
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 if (!defined('ABSPATH')) {
     exit;
 }
@@ -12,7 +13,7 @@ if (!defined('ABSPATH')) {
         <?php
         // LOOP through each video in the playlist
         foreach ($videos['items'] as $item):
-            
+
             // Extract video information from the API response
             $snippet = $item['snippet'];
             $video_id = $snippet['resourceId']['videoId'];

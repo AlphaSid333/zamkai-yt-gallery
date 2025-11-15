@@ -1,10 +1,12 @@
 <?php
 /**
- * Plugin Name: Zamkai YT Carousel
+ * Plugin Name: Zamkai YT Gallery
  * Description: Displays YouTube playlist videos in a customizable grid format
  * Author: Zamkai master
+ * Text Domain: zamkai-yt
  * Version: 1.0
- * License: GPL Public license: https://www.gnu.org/licenses/gpl-3.0.en.html#license-text 
+ * License: GNU General Public License v3.0
+ * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  */
 
 // This prevents people from accessing this file directly in their browser
@@ -33,6 +35,12 @@ class YouTube_Playlist_Grid {
         add_action('wp_enqueue_scripts', array($this, 'enqueue_styles'));
 
         add_action( 'enqueue_block_editor_assets', array($this,'enqueue_styles') );
+
+        add_action('init', array($this, 'zamkai_yt_register_block'));
+
+    // Include the admin class
+        require_once plugin_dir_path(__FILE__) . 'includes/admin-menu.php';
+        
         //This registers the block for the gallery
         // add_action('init', 'zamkai_carousel_register_block');
     }
@@ -211,6 +219,7 @@ public function enqueue_styles() {
             if (file_exists($template_path)) {
                 // Start output buffering - we'll collect HTML and return it all at once
                 include $template_path;
+
                 // Get all the HTML we collected and return it
             } else {
                 // Fallback error if template is missing
@@ -221,21 +230,15 @@ public function enqueue_styles() {
         // Get all the HTML we collected and return it
         return ob_get_clean();
     }
+    //Block addition function the function is hooked in the construct function at start
+    function zamkai_yt_register_block() {
+        // Only register if build exists
+        if ( file_exists( plugin_dir_path( __FILE__ ) . 'build/index.js' ) ) {
+            register_block_type( __DIR__ . '/build' );
+        }
+    }
 }
-
 // CREATE AN INSTANCE OF OUR PLUGIN CLASS
 // This actually starts the plugin running
 new YouTube_Playlist_Grid();
-
-// Include the admin class
-require_once plugin_dir_path(__FILE__) . 'includes/admin-menu.php';
-
-//Block addition function the function is hooked in the construct function at start
-function zamkai_carousel_register_block() {
-    // Only register if build exists
-    if ( file_exists( plugin_dir_path( __FILE__ ) . 'build/index.js' ) ) {
-        register_block_type( __DIR__ . '/build' );
-    }
-}
-add_action('init', 'zamkai_carousel_register_block'); 
 
