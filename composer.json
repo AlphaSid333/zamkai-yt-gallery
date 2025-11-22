@@ -1,0 +1,22 @@
+{
+    "name": "sidth/zamkai-carousel-wp",
+    "autoload": {
+        "psr-4": {
+            "Sidth\\ZamkaiCarouselWp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sid",
+            "email": "siddhi.sharma@themegrill.com"
+        }
+    ],
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "require-dev": {
+        "wp-coding-standards/wpcs": "^3.0"
+    }
+}
