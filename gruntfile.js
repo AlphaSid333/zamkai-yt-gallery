@@ -12,7 +12,7 @@ module.exports = function(grunt) {
                 },
                 files: [
                     // Includes: Core files in main directory
-                    { src: ['tg-carousel.php', 'readme.md'], dest: '/', filter: 'isFile' },
+                    { src: ['*.php', 'readme.md'], dest: '/', filter: 'isFile' },
                     
                     // Includes: Specified folders (recursive)
                     { src: ['css/**'], dest: '/' },
