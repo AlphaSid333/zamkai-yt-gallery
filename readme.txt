@@ -2,8 +2,8 @@
 Contributors: zamkaimaster
 Tags: YouTube Grid, YouTube Gallery Block, YouTube Gallery, YouTube Playlist
 Requires at least: 5.4
-Tested up to: 6.8.2
-Stable tag: 1.0.0
+Tested up to: 6.8
+Stable tag: 1.0
 Requires PHP: 7.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
