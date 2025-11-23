@@ -1,6 +1,7 @@
 <?php
 // SECURITY CHECK - Ensure this file is only included from the plugin class
 //phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -9,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <!-- GRID CONTAINER - Wraps all video cards -->
 <div class="ytpg-container">
 	<div class="ytpg-grid">
-		
+
 		<?php
 		// LOOP through each video in the playlist
 		foreach ( $videos['items'] as $item ) :
@@ -31,38 +32,38 @@ if ( ! defined( 'ABSPATH' ) ) {
 			// Build the YouTube watch URL
 			$video_url = 'https://www.youtube.com/watch?v=' . $video_id;
 			?>
-		
+
 		<!-- SINGLE VIDEO CARD -->
 		<div class="ytpg-video-card">
-			
+
 			<!-- BACKGROUND IMAGE OVERLAY -->
-			<div class="ytpg-card-background" 
+			<div class="ytpg-card-background"
 				style="background-image: url('<?php echo esc_url( $thumbnail ); ?>');">
 			</div>
-			
+
 			<!-- GRADIENT OVERLAY -->
 			<div class="ytpg-overlay"></div>
-			
+
 			<!-- CONTENT SECTION (positioned over image) -->
 			<div class="ytpg-content">
-				
+
 				<!-- Top section with play icon -->
 				<div class="ytpg-play-icon">
 					<svg viewBox="0 0 24 24" fill="currentColor">
 						<path d="M8 5v14l11-7z"/>
 					</svg>
 				</div>
-				
+
 				<!-- Bottom section with text -->
 				<div class="ytpg-info">
 					<!-- Video Title -->
 					<h3 class="ytpg-title"><?php echo esc_html( $title ); ?></h3>
-					
+
 					<!-- Video Description (only show if it exists) -->
 					<?php if ( ! empty( $description ) ) : ?>
 						<p class="ytpg-description"><?php echo esc_html( $description ); ?></p>
 					<?php endif; ?>
-					
+
 					<!-- Watch Button -->
 					<a href="<?php echo esc_url( $video_url ); ?>"
 						target="_blank"
@@ -74,13 +75,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 						</svg>
 					</a>
 				</div>
-				
+
 			</div>
-			
+
 		</div>
-		
+
 		<?php endforeach; ?>
-		
+
 	</div>
 </div>
 

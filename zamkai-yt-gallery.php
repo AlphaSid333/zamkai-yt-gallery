@@ -11,6 +11,7 @@
 
 // This prevents people from accessing this file directly in their browser
 // It's a security measure to ensure this code only runs within WordPress
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -20,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * This is the container for all our plugin's functionality
  * Think of it as the "brain" of the plugin that coordinates everything
  */
+
 class YouTube_Playlist_Grid {
 
 	private $option_name = 'ytpg_settings';
@@ -42,9 +44,6 @@ class YouTube_Playlist_Grid {
 
 		// Include the admin class
 		require_once plugin_dir_path( __FILE__ ) . 'includes/admin-menu.php';
-
-		// This registers the block for the gallery
-		// add_action('init', 'zamkai_carousel_register_block');
 	}
 
 
@@ -83,6 +82,7 @@ class YouTube_Playlist_Grid {
 
 		// If user added custom CSS in settings, add that too
 		// This allows them to override our default styles (loads after the file)
+
 		if ( ! empty( $settings['custom_css'] ) ) {
 			wp_add_inline_style( 'ytpg-default', $settings['custom_css'] );
 		}
@@ -131,6 +131,7 @@ class YouTube_Playlist_Grid {
 
 		// Make the HTTP request to YouTube
 		// timeout: 15 means give up after 15 seconds if no response
+
 		$response = wp_remote_get( $api_url, array( 'timeout' => 15 ) );
 
 		// Check if the request failed (network error, etc.)
