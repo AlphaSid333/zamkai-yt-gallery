@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Zamkai YT Gallery
+ * Plugin Name: Zamkai Video Gallery for YouTube Playlists
  * Description: Displays YouTube playlist videos in a customizable grid format
  * Author: TechGrill
  * Text Domain: zamkai-yt-gallery

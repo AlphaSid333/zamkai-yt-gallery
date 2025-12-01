@@ -1,4 +1,4 @@
-=== Zamkai YT Gallery ===
+=== Zamkai Video Gallery for YouTube Playlists ===
 Contributors: zamkaimaster
 Tags: YouTube Grid, YouTube Gallery Block, YouTube Gallery, YouTube Playlist
 Requires at least: 5.4
@@ -21,7 +21,7 @@ Configure the plugin from the YT gallery menu page.
 
 == Installation ==
 
-1. Upload the `zamkai-yt-gallery` folder to `/wp-content/plugins/`
+1. Upload the `zamkai-video-gallery-for-youtube` folder to `/wp-content/plugins/`
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Go to YT Gallery → Settings to add your YouTube API key & playlist link
 4. Use the Gutenberg block under widgets or the `[youtube_playlist_grid]` shortcode

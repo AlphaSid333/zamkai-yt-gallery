@@ -1,4 +1,4 @@
-# Zamkai YT Gallery
+# Zamkai Video Gallery for YouTube Playlists
 Contributors: Zamkai Master
 Tested up to: 6.8
 Stable tag: 1.0

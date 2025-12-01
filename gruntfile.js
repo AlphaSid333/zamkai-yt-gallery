@@ -7,7 +7,7 @@ module.exports = function(grunt) {
         compress: {
             main: {
                 options: {
-                    archive: 'zamkai-yt-gallery.zip',  // e.g., tg-carousel-1.0.0.zip
+                    archive: 'zamkai-video-gallery-for-youtube.zip',
                     mode: 'zip'
                 },
                 files: [
