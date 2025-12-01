@@ -3,7 +3,6 @@
  * Plugin Name: Zamkai Video Gallery for YouTube Playlists
  * Description: Displays YouTube playlist videos in a customizable grid format
  * Author: TechGrill
- * Text Domain: zamkai-yt-gallery
  * Version: 1.0
  * License: GNU General Public License v3.0
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
