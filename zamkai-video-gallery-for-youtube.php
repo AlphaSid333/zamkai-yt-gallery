@@ -83,7 +83,7 @@ class YouTube_Playlist_Grid {
 		// This allows them to override our default styles (loads after the file)
 
 		if ( ! empty( $settings['custom_css'] ) ) {
-			wp_add_inline_style( 'ytpg-default', $settings['custom_css'] );
+			wp_add_inline_style( 'ytpg-default', esc_css( $settings['custom_css']));
 		}
 	}
 
