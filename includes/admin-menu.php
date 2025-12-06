@@ -4,12 +4,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class YTPG_Admin_Menu {
+class Zamkai_YTPG_Admin {
 
 	// This stores the name we use to save settings in the WordPress database.
 	// It's like a label on a storage box where we keep all our plugin settings.
 
-	private $option_name = 'ytpg_settings';
+	private $option_name = 'zamkai_ytpg_settings';
 
 	public function __construct() {
 		// When WordPress builds the admin menu, add our settings page
@@ -29,10 +29,10 @@ class YTPG_Admin_Menu {
 		 */
 	public function add_admin_page() {
 		add_menu_page(
-			'YouTube Playlist Grid Settings',  // Page title (shows in browser tab)
-			'YT Playlist Grid',                // Menu title (shows in sidebar)
+			'Zamkai YouTube Playlist Gallery Settings',  // Page title (shows in browser tab)
+			'Zamkai YT Gallery',                // Menu title (shows in sidebar)
 			'manage_options',                  // Required user permission (only admins)
-			'youtube-playlist-grid',           // Unique page identifier (slug)
+			'zamkai-yt-playlist-gallery',           // Unique page identifier (slug)
 			array( $this, 'settings_page' ),      // Function to display the page
 			'dashicons-youtube'                // Custom dashicon YT image for menu page
 		);
@@ -45,7 +45,7 @@ class YTPG_Admin_Menu {
 	 */
 	public function register_settings() {
 		register_setting(
-			'ytpg_settings_group',
+			'zamkai_ytpg_settings_group',
 			$this->option_name,
 			array( $this, 'sanitize_settings' ) // your sanitization method
 		);
@@ -54,22 +54,33 @@ class YTPG_Admin_Menu {
 	// Add this method to your class.
 
 	public function sanitize_settings( $values ) {
-		// Always return the sanitized array (or scalar)
 		$sanitized = array();
 
-		// Example: if your option is an array of values.
+		// Sanitize API key
+		if ( isset( $values['api_key'] ) ) {
+			$sanitized['api_key'] = sanitize_text_field( $values['api_key'] );
+		}
 
-		foreach ( (array) $values as $key => $value ) {
-			if ( is_string( $value ) ) {
-				$sanitized[ $key ] = sanitize_text_field( $value );
-			} elseif ( is_array( $value ) ) {
-				$sanitized[ $key ] = array_map( 'sanitize_text_field', $value );
-			} elseif ( is_int( $value ) ) {
-				$sanitized[ $key ] = (int) $value;
-			} // ... handle other types: urls, emails, etc.
-			else {
-				$sanitized[ $key ] = $value; // fallback
-			}
+		// Sanitize playlist ID
+		if ( isset( $values['playlist_id'] ) ) {
+			$sanitized['playlist_id'] = sanitize_text_field( $values['playlist_id'] );
+		}
+
+		// Sanitize max results (ensure it's a number between 1-50)
+		if ( isset( $values['max_results'] ) ) {
+			$sanitized['max_results'] = absint( $values['max_results'] );
+			$sanitized['max_results'] = max( 1, min( 50, $sanitized['max_results'] ) );
+		}
+
+		// Sanitize gallery style (only allow specific values)
+		if ( isset( $values['gallery_style'] ) ) {
+			$sanitized['gallery_style'] = sanitize_text_field( $values['gallery_style'] );
+		}
+
+		// Sanitize custom CSS - preserve newlines but strip HTML tags
+		if ( isset( $values['custom_css'] ) ) {
+			// Remove all HTML/PHP tags but preserve CSS formatting
+			$sanitized['custom_css'] = wp_strip_all_tags( $values['custom_css'] );
 		}
 
 		return $sanitized;
@@ -82,7 +93,7 @@ class YTPG_Admin_Menu {
 	 */
 	public function handle_cache_clear() {
 		// Check if the clear cache button was clicked AND verify the security token
-		if ( isset( $_POST['ytpg_clear_cache'] ) && check_admin_referer( 'ytpg_clear_cache_action', 'ytpg_clear_cache_nonce' ) ) {
+		if ( isset( $_POST['zamkai_ytpg_clear_cache'] ) && check_admin_referer( 'zamkai_ytpg_clear_cache_action', 'zamkai_ytpg_clear_cache_nonce' ) ) {
 
 			// Get our saved settings from the database
 			$settings    = get_option( $this->option_name );
@@ -93,17 +104,17 @@ class YTPG_Admin_Menu {
 			if ( ! empty( $playlist_id ) ) {
 				// Generate the same cache key we use to store the data
 				// This is like finding the right storage box to empty
-				$cache_key = 'ytpg_videos_' . md5( $playlist_id . $max_results );
+				$cache_key = 'zamkai_ytpg_videos_' . md5( $playlist_id . $max_results );
 
 				// Delete the cached data from WordPress
 				delete_transient( $cache_key );
 
 				// Store success message in a transient (temporary storage)
 				// This way we can display it once and it won't duplicate
-				// set_transient('ytpg_cache_cleared_notice', true, 30);
+				// set_transient('zamkai_ytpg_cache_cleared_notice', true, 30);
 				add_settings_error(
-					'ytpg_messages',               // Slug (can be anything)
-					'ytpg_cache_cleared',          // Unique code
+					'zamkai_ytpg_messages',               // Slug (can be anything)
+					'zamkai_ytpg_cache_cleared',          // Unique code
 					'Cache cleared successfully and playlist refreshed!', // Message
 					'success'                      // Type: 'success', 'error', 'warning', 'info'
 				);
@@ -122,7 +133,7 @@ class YTPG_Admin_Menu {
 
 		?>
 	<div class="wrap">
-	<h1>YouTube Playlist Grid Settings</h1>
+	<h1>YouTube Playlist Gallery Settings</h1>
 
 	<!-- MAIN SETTINGS FORM -->
 	<!-- This form saves to WordPress using options.php -->
@@ -132,13 +143,13 @@ class YTPG_Admin_Menu {
 
 		// Add hidden security fields that WordPress requires
 
-		settings_fields( 'ytpg_settings_group' );
+		settings_fields( 'zamkai_ytpg_settings_group' );
 		?>
 
 	<!-- USAGE INSTRUCTIONS -->
 
 	<h2>Usage:</h2>
-	<p>Fill out the fields below and use the Gutenberg Block or the shortcode <code>[youtube_playlist_grid]</code> in any page or post to display your playlist grid.</p>
+	<p>Fill out the fields below and use the Gutenberg Block or the shortcode <code>[zamkai_yt_gallery]</code> in any page or post to display your playlist gallery.</p>
 
 		<table class="form-table">
 
@@ -250,9 +261,9 @@ class YTPG_Admin_Menu {
 
 		// Add a security token to prevent unauthorized cache clearing
 
-		wp_nonce_field( 'ytpg_clear_cache_action', 'ytpg_clear_cache_nonce' );
+		wp_nonce_field( 'zamkai_ytpg_clear_cache_action', 'zamkai_ytpg_clear_cache_nonce' );
 		?>
-		<input type="submit" name="ytpg_clear_cache" class="button button-secondary" value="Clear Cache & Refresh Playlist" />
+		<input type="submit" name="zamkai_ytpg_clear_cache" class="button button-secondary" value="Clear Cache & Refresh Playlist" />
 	</form>
 
 	<hr>
@@ -260,4 +271,4 @@ class YTPG_Admin_Menu {
 		<?php
 	}
 }
-new YTPG_admin_menu();
+new Zamkai_YTPG_Admin();

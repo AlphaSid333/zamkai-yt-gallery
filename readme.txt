@@ -2,7 +2,7 @@
 Contributors: zamkaimaster
 Tags: YouTube Grid, YouTube Gallery Block, YouTube Gallery, YouTube Playlist
 Requires at least: 5.4
-Tested up to: 6.8
+Tested up to: 6.9
 Stable tag: 1.0
 Requires PHP: 7.0
 License: GPLv3
@@ -12,7 +12,7 @@ Instantly turn any YouTube playlist into a stunning, responsive video gallery.
 
 == Description ==
 
-Just paste your playlist URL, add your YouTube API key once, and display it anywhere with the beautiful YouTube Gallery Gutenberg block or simple shortcode. No coding needed – fully customizable, mobile-ready, and lightning fast.
+Just paste your playlist URL, add your YouTube API key, and display it anywhere with the beautiful YouTube Gallery Gutenberg block or simple shortcode. No coding needed – fully customizable, mobile-ready, and lightning fast.
 
 Generate the YouTube API key for free here:
 [YouTube API v3 Documentation](https://developers.google.com/youtube/v3/getting-started)
@@ -33,6 +33,14 @@ Configure the plugin from the YT gallery menu page.
 3. Settings page – Enter API key & playlist link
 4. Adding the Zamkai YT Gallery block in the editor
 
+== External Services ==
+
+The plugin connects to Google's YouTube API to gather the video playlist information, it is needed for the core functionality of the plugin.
+It is used to receive video Google [TOS](https://policies.google.com/terms) and [Privacy Policy](https://policies.google.com/privacy)
+
+== Contribute Here ==
+You are free to access the complete code here: [Github repo](https://github.com/AlphaSid333/zamkai-yt-gallery).
+
 == Frequently Asked Questions ==
 
 = Where do I get a YouTube API key? =
@@ -40,6 +48,9 @@ Follow this guide: https://developers.google.com/youtube/v3/getting-started
 
 = Can I change the number of columns? =
 Yes, the block and shortcode both support many customization options.
+
+= Can I contribute to the plugin? =
+Yes, you can do so via the [Github repo](https://github.com/AlphaSid333/zamkai-yt-gallery)
 
 == Changelog ==
 

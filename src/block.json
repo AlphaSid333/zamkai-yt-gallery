@@ -1,18 +1,29 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "zamkai-carousel-wp/youtube-gallery",
+	"name": "zamkai-ytpg/zamkai-youtube-gallery",
 	"version": "0.1.0",
-	"title": "YouTube Gallery/Carousel",
+	"title": "Zamkai YouTube Gallery",
 	"category": "widgets",
-	"icon": "smiley",
-	"description": "Render Beautiful YouTube Gallery!",
+	"icon": "video-alt3",
+	"description": "Render a Beautiful YouTube Gallery!",
 	"example": {},
 	"supports": {
-		"html": false
+		"align": true,
+		"html": false,
+		"spacing":{
+			"padding": true,
+			"margin": true
+		}
+	},
+	"attributes":{
+		"align": {
+			"type": "string",
+			"default": "wide"
+		}
 	},
 	"render": "file:../includes/render.php",
 	"editorScript": "file:./index.js",
-	"editorStyle": "ytpg-default",
-	"style": "ytpg-default"
+	"editorStyle": "zamkai-ytpg-default",
+	"style": "zamkai-ytpg-default"
 	}
