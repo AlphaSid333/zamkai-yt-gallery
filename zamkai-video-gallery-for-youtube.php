@@ -53,7 +53,7 @@ class Zamkai_YTPG_Main {
 	 * It runs on every front-end page (not admin pages)
 	 */
 	public function enqueue_styles() {
-		// Get our settings to access custom CSS
+		
 		$settings = get_option( $this->option_name );
 
 		// Get the gallery style setting (default to 'simple' if not set)
@@ -77,13 +77,7 @@ class Zamkai_YTPG_Main {
 			);
 		}
 		wp_enqueue_style( 'zamkai-ytpg-default' );
-		// Enqueue the external CSS file (replace __FILE__ with $this->plugin_file if needed)
-		// If user added custom CSS in settings, add that too
-		// This allows them to override our default styles (loads after the file)
 
-		if ( ! empty( $settings['custom_css'] ) ) {
-			wp_add_inline_style( 'zamkai-ytpg-default', esc_css( $settings['custom_css'] ) );
-		}
 	}
 
 	/**

@@ -14,7 +14,7 @@
     }
   },
   "devDependencies": {
-    "@wordpress/scripts": "^30.27.0",
+    "@wordpress/scripts": "^19.2.4",
     "grunt": "^1.6.1",
     "grunt-contrib-compress": "^2.0.0"
   },

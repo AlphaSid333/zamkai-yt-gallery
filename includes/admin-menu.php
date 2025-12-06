@@ -77,12 +77,6 @@ class Zamkai_YTPG_Admin {
 			$sanitized['gallery_style'] = sanitize_text_field( $values['gallery_style'] );
 		}
 
-		// Sanitize custom CSS - preserve newlines but strip HTML tags
-		if ( isset( $values['custom_css'] ) ) {
-			// Remove all HTML/PHP tags but preserve CSS formatting
-			$sanitized['custom_css'] = wp_strip_all_tags( $values['custom_css'] );
-		}
-
 		return $sanitized;
 	}
 
@@ -219,21 +213,6 @@ class Zamkai_YTPG_Admin {
 					<option value="modern" <?php selected( $settings['gallery_style'] ?? 'simple', 'modern' ); ?>>Modern Layout</option>
 				</select>
 				<p class="description">Choose a layout style you want to use</p>
-				</td>
-			</tr>
-
-			<!-- CUSTOM CSS FIELD -->
-
-			<tr>
-				<th scope="row">
-					<label for="custom_css">Custom CSS</label>
-				</th>
-				<td>
-					<!-- Large text area for custom CSS code -->
-
-					<textarea id="custom_css" name="<?php echo esc_html( $this->option_name ); ?>[custom_css]"
-								rows="10" class="large-text code"><?php echo esc_textarea( $settings['custom_css'] ?? '' ); ?></textarea>
-					<p class="description">Add your custom CSS styles here</p>
 				</td>
 			</tr>
 		</table>
