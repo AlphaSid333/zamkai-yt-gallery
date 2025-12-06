@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Zamkai Video Gallery for YouTube Playlists
- * Description: Displays YouTube playlist videos in a customizable grid format
+ * Description: Displays YouTube playlist videos in a customizable gallery format
  * Author: TechGrill
  * Version: 1.0
  * License: GNU General Public License v3.0
@@ -21,9 +21,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Think of it as the "brain" of the plugin that coordinates everything
  */
 
-class YouTube_Playlist_Grid {
+class Zamkai_YTPG_Main {
 
-	private $option_name = 'ytpg_settings';
+	private $option_name = 'zamkai_ytpg_settings';
 	/**
 	 * CONSTRUCTOR - This runs automatically when the plugin loads
 	 * It "hooks" our functions into WordPress so they run at the right times
@@ -31,15 +31,15 @@ class YouTube_Playlist_Grid {
 	 */
 	public function __construct() {
 
-		// Register our shortcode [youtube_playlist_grid] so it displays videos
-		add_shortcode( 'youtube_playlist_grid', array( $this, 'render_grid' ) );
+		// Register our shortcode [zamkai_yt_gallery] so it displays videos
+		add_shortcode( 'zamkai_yt_gallery', array( $this, 'render_gallery' ) );
 
 		// When WordPress loads page styles, add our CSS
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_styles' ) );
 
-		add_action( 'init', array( $this, 'zamkai_yt_register_block' ) );
+		add_action( 'init', array( $this, 'register_block' ) );
 
 		// Include the admin class
 		require_once plugin_dir_path( __FILE__ ) . 'includes/admin-menu.php';
@@ -49,7 +49,7 @@ class YouTube_Playlist_Grid {
 
 	/**
 	 * ENQUEUE STYLES
-	 * This loads the CSS styles that make our video grid look good
+	 * This loads the CSS styles that make our video gallery look good
 	 * It runs on every front-end page (not admin pages)
 	 */
 	public function enqueue_styles() {
@@ -61,7 +61,7 @@ class YouTube_Playlist_Grid {
 
 		if ( $gallery_style === 'modern' ) {
 			wp_register_style(
-				'ytpg-default',                          // Handle (unique identifier)
+				'zamkai-ytpg-default',                          // Handle (unique identifier)
 				plugins_url( 'css/modern-yt-cards.css', __FILE__ ), // URL to the CSS file
 				array(),                                 // Dependencies (add if needed, e.g., array('wp-block-library'))
 				'1.0.0',                                 // Version (update for cache busting)
@@ -69,21 +69,20 @@ class YouTube_Playlist_Grid {
 			);
 		} else {
 			wp_register_style(
-				'ytpg-default',                          // Handle (unique identifier)
+				'zamkai-ytpg-default',                          // Handle (unique identifier)
 				plugins_url( 'css/yt-cards.css', __FILE__ ), // URL to the CSS file
 				array(),                                 // Dependencies (add if needed, e.g., array('wp-block-library'))
 				'1.0.0',                                 // Version (update for cache busting)
 				'all'                                    // Media type
 			);
 		}
-		wp_enqueue_style( 'ytpg-default' );
+		wp_enqueue_style( 'zamkai-ytpg-default' );
 		// Enqueue the external CSS file (replace __FILE__ with $this->plugin_file if needed)
-
 		// If user added custom CSS in settings, add that too
 		// This allows them to override our default styles (loads after the file)
 
 		if ( ! empty( $settings['custom_css'] ) ) {
-			wp_add_inline_style( 'ytpg-default', esc_css( $settings['custom_css']));
+			wp_add_inline_style( 'zamkai-ytpg-default', esc_css( $settings['custom_css'] ) );
 		}
 	}
 
@@ -154,11 +153,11 @@ class YouTube_Playlist_Grid {
 	}
 
 	/**
-	 * RENDER GRID
-	 * This is the main function that displays the video grid on the front-end
-	 * It's called when someone uses the [youtube_playlist_grid] shortcode
+	 * RENDER GALLERY
+	 * This is the main function that displays the video gallery on the front-end
+	 * It's called when someone uses the [zamkai_yt_gallery] shortcode
 	 */
-	public function render_grid( $atts ) {
+	public function render_gallery( $atts ) {
 		// Get our saved settings from the database
 		$settings = get_option( $this->option_name );
 
@@ -169,12 +168,12 @@ class YouTube_Playlist_Grid {
 
 		// If settings aren't configured, show an error message
 		if ( empty( $api_key ) || empty( $playlist_id ) ) {
-			return '<div class="ytpg-error">Please configure the YouTube API key and Playlist ID in the plugin settings.</div>';
+			return '<div class="zamkai_ytpg-error">Please configure the YouTube API key and Playlist ID in the plugin settings.</div>';
 		}
 
 		// Create a unique cache key based on playlist ID and number of videos
 		// This is like a label for our stored data
-		$cache_key = 'ytpg_videos_' . md5( $playlist_id . $max_results );
+		$cache_key = 'zamkai_ytpg_videos_' . md5( $playlist_id . $max_results );
 
 		// Try to get cached videos from WordPress storage
 		// This avoids hitting YouTube's API every time
@@ -193,12 +192,12 @@ class YouTube_Playlist_Grid {
 
 		// If there was an error fetching videos, show error message
 		if ( isset( $videos['error'] ) ) {
-			return '<div class="ytpg-error">Error fetching videos: ' . esc_html( $videos['error'] ) . '</div>';
+			return '<div class="zamkai-ytpg-error">Error fetching videos: ' . esc_html( $videos['error'] ) . '</div>';
 		}
 
 		// If playlist is empty, show a message
 		if ( empty( $videos['items'] ) ) {
-			return '<div class="ytpg-error">No videos found in this playlist.</div>';
+			return '<div class="zamkai-ytpg-error">No videos found in this playlist.</div>';
 		}
 
 		// Start output buffering - we'll collect HTML and return it all at once
@@ -226,20 +225,22 @@ class YouTube_Playlist_Grid {
 			// Get all the HTML we collected and return it
 		} else {
 			// Fallback error if template is missing
-			return '<div class="ytpg-error">Template file not found for style: ' . esc_html( $gallery_style ) . '</div>';
+			return '<div class="zamkai-ytpg-error">Template file not found for style: ' . esc_html( $gallery_style ) . '</div>';
 		}
 
 		// Get all the HTML we collected and return it
 		return ob_get_clean();
 	}
 	// Block addition function the function is hooked in the construct function at start
-	function zamkai_yt_register_block() {
+	public function register_block() {
 		// Only register if build exists
 		if ( file_exists( plugin_dir_path( __FILE__ ) . 'build/index.js' ) ) {
 			register_block_type( __DIR__ . '/build' );
 		}
 	}
 }
+
+
 // CREATE AN INSTANCE OF OUR PLUGIN CLASS
 // This actually starts the plugin running
-new YouTube_Playlist_Grid();
+new Zamkai_YTPG_Main();

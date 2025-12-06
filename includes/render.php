@@ -6,4 +6,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	require_once plugin_dir_path( __FILE__ ) . '../zamkai-video-gallery-for-youtube.php';
 
-	echo do_shortcode( '[youtube_playlist_grid]' );
+	echo do_shortcode( '[zamkai_yt_gallery]' );

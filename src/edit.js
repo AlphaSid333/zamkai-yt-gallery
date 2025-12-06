@@ -44,7 +44,7 @@ const Edit = ( { attributes } ) => {
   return (
     <div { ...useBlockProps() }>
       <ServerSideRender
-        block="zamkai-carousel-wp/youtube-gallery"
+        block="zamkai-ytpg/zamkai-youtube-gallery"
         // attributes={ attributes }
       />
     </div>
